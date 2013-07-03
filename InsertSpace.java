@@ -1,37 +1,42 @@
-package com.sedric.math;
+package com.sedric;
+
+import java.util.Arrays;
 
 public class InsertSpace {
 
-	public static void insertSpace(String[] arr, int spaceNum, int startPosition, StringBuilder sb) {
-		int length = arr.length;
-		if (spaceNum == 1) {
-			for(int i = startPosition; i < length; i++) {
-				if (i == startPosition) {
-					sb.append(arr[i]).append("    ");
-				} else {
-					sb.append(arr[i]);
-				}
+	public static void insertSpace(String[] arr, int spaceNum, int startPos, StringBuilder sb) {
+		if (spaceNum == 0) {
+			for (int i = 0; i < arr.length; i++) {
+				sb.append(arr[i]);
 			}
-			System.out.println(sb.toString());
+			System.out.println(sb);
 		} else {
-			sb.append(arr[startPosition]).append("    ");
-			if (spaceNum >= 1) {
-				insertSpace(arr, spaceNum - 1, startPosition + 1, sb);
+			for (; startPos < arr.length - spaceNum; startPos++) {
+				StringBuilder copySb = new StringBuilder(sb.toString());
+				for (int i = 0; i < startPos; i++) {
+					copySb.append(arr[i]);
+				}
+				if (spaceNum == 1) {
+					for (int i = startPos; i < arr.length; i++) {
+						if (i == startPos) {
+							copySb.append(arr[i]).append("=");
+						} else {
+							copySb.append(arr[i]);
+						}
+					}
+					System.out.println(copySb.toString());
+				} else {
+					copySb.append(arr[startPos]).append("=");
+					insertSpace(Arrays.copyOfRange(arr, startPos + 1, arr.length), spaceNum - 1, 0, copySb);
+				}
 			}
 		}
 	}
 
 	public static void main(String[] args) {
-		String[] arr = new String[] { "a", "b", "c", "d", "e" };
-		for(int spaceNum = 1; spaceNum < arr.length; spaceNum++) {
-			for(int startPosition = 0; startPosition < arr.length - spaceNum; startPosition++) {
-				StringBuilder sb = new StringBuilder();
-				for(int i = 0; i < startPosition; i++) {
-					sb.append(arr[i]);
-				}
-				insertSpace(arr, spaceNum, startPosition, sb);
-			}
+		String[] arr = new String[] { "a", "b", "c", "d", "e", "f", "g" };
+		for (int spaceNum = 0; spaceNum < arr.length; spaceNum++) {
+			insertSpace(arr, spaceNum, 0, new StringBuilder());
 		}
-
 	}
 }
