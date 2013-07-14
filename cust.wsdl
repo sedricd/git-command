@@ -1,0 +1,220 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.serviceprovide.module.sf.com/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+	name="CustomerServiceService" targetNamespace="http://service.serviceprovide.module.sf.com/">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="http://service.serviceprovide.module.sf.com/"
+			attributeFormDefault="unqualified" elementFormDefault="unqualified"
+			targetNamespace="http://service.serviceprovide.module.sf.com/">
+			<xsd:element name="orderMailBindingService" type="tns:orderMailBindingService" />
+			<xsd:complexType name="orderMailBindingService">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="arg0" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="orderMailBindingServiceResponse" type="tns:orderMailBindingServiceResponse" />
+			<xsd:complexType name="orderMailBindingServiceResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="return" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryMailnoDetailService" type="tns:queryMailnoDetailService" />
+			<xsd:complexType name="queryMailnoDetailService">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="arg0" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryMailnoDetailServiceResponse"
+				type="tns:queryMailnoDetailServiceResponse" />
+			<xsd:complexType name="queryMailnoDetailServiceResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="return" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="orderService" type="tns:orderService" />
+			<xsd:complexType name="orderService">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="arg0" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="orderServiceResponse" type="tns:orderServiceResponse" />
+			<xsd:complexType name="orderServiceResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="return" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logisticQueryStandard" type="tns:logisticQueryStandard" />
+			<xsd:complexType name="logisticQueryStandard">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="arg0" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logisticQueryStandardResponse" type="tns:logisticQueryStandardResponse" />
+			<xsd:complexType name="logisticQueryStandardResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="return" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="routeTrackingService" type="tns:routeTrackingService" />
+			<xsd:complexType name="routeTrackingService">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="arg0" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="routeTrackingServiceResponse" type="tns:routeTrackingServiceResponse" />
+			<xsd:complexType name="routeTrackingServiceResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="return" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="cancelOrderService" type="tns:cancelOrderService" />
+			<xsd:complexType name="cancelOrderService">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="arg0" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="cancelOrderServiceResponse" type="tns:cancelOrderServiceResponse" />
+			<xsd:complexType name="cancelOrderServiceResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="return" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="logisticQueryStandard">
+		<wsdl:part element="tns:logisticQueryStandard" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="orderServiceResponse">
+		<wsdl:part element="tns:orderServiceResponse" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="orderService">
+		<wsdl:part element="tns:orderService" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="routeTrackingServiceResponse">
+		<wsdl:part element="tns:routeTrackingServiceResponse" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="routeTrackingService">
+		<wsdl:part element="tns:routeTrackingService" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="logisticQueryStandardResponse">
+		<wsdl:part element="tns:logisticQueryStandardResponse" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="cancelOrderServiceResponse">
+		<wsdl:part element="tns:cancelOrderServiceResponse" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="queryMailnoDetailService">
+		<wsdl:part element="tns:queryMailnoDetailService" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="cancelOrderService">
+		<wsdl:part element="tns:cancelOrderService" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="orderMailBindingServiceResponse">
+		<wsdl:part element="tns:orderMailBindingServiceResponse"
+			name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="orderMailBindingService">
+		<wsdl:part element="tns:orderMailBindingService" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="queryMailnoDetailServiceResponse">
+		<wsdl:part element="tns:queryMailnoDetailServiceResponse"
+			name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ICustomerService">
+		<wsdl:operation name="orderMailBindingService">
+			<wsdl:input message="tns:orderMailBindingService" name="orderMailBindingService"></wsdl:input>
+			<wsdl:output message="tns:orderMailBindingServiceResponse"
+				name="orderMailBindingServiceResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryMailnoDetailService">
+			<wsdl:input message="tns:queryMailnoDetailService" name="queryMailnoDetailService"></wsdl:input>
+			<wsdl:output message="tns:queryMailnoDetailServiceResponse"
+				name="queryMailnoDetailServiceResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="orderService">
+			<wsdl:input message="tns:orderService" name="orderService"></wsdl:input>
+			<wsdl:output message="tns:orderServiceResponse" name="orderServiceResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logisticQueryStandard">
+			<wsdl:input message="tns:logisticQueryStandard" name="logisticQueryStandard"></wsdl:input>
+			<wsdl:output message="tns:logisticQueryStandardResponse"
+				name="logisticQueryStandardResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="routeTrackingService">
+			<wsdl:input message="tns:routeTrackingService" name="routeTrackingService"></wsdl:input>
+			<wsdl:output message="tns:routeTrackingServiceResponse"
+				name="routeTrackingServiceResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="cancelOrderService">
+			<wsdl:input message="tns:cancelOrderService" name="cancelOrderService"></wsdl:input>
+			<wsdl:output message="tns:cancelOrderServiceResponse"
+				name="cancelOrderServiceResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CustomerServiceServiceSoapBinding"
+		type="tns:ICustomerService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="orderMailBindingService">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="orderMailBindingService">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="orderMailBindingServiceResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryMailnoDetailService">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="queryMailnoDetailService">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="queryMailnoDetailServiceResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logisticQueryStandard">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="logisticQueryStandard">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="logisticQueryStandardResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="orderService">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="orderService">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="orderServiceResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="routeTrackingService">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="routeTrackingService">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="routeTrackingServiceResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="cancelOrderService">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="cancelOrderService">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="cancelOrderServiceResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CustomerServiceService">
+		<wsdl:port binding="tns:CustomerServiceServiceSoapBinding"
+			name="CustomerServicePort">
+			<soap:address
+				location="http://219.134.187.154:9154/bsp-oip/ws/CustomerService" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
