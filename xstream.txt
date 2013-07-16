@@ -1,0 +1,87 @@
+XmlFriendlyNameCoder  XppDriver 
+XStream中注入了大量默认converter，通过DefaultConverterLookup.lookupConverterForType(Class type)方法可以找到默認的converter 
+AnnotationMapper.processAnnotations读取注解配置
+AnnotationMapper.processTypes方法中addParametrizedTypes(type, types);将会把对象类型的converter同时赋给该对象的属性
+writer.startNode开始元素
+中间调用convertAnother(item)写元素属性及值
+DefaultConverterLookup.lookupConverterForType(class type)根据当前对象找到第一个可以转换该对象的converter
+converter排序最高的是NullConverter，其顺序值为PRIORITY_VERY_HIGH
+调用xstream.registerConverter方法可以指定当前converter的优先级
+通过注解方式的XStreamConverter可以通过属性priority指定优先级，其默认值为XStream.PRIORITY_NORMAL，XStreamCoverter注解中的其他参数是构造该converter时可以传入的构造参数
+注解方式的converter对象是通过
+private Converter cacheConverter(final XStreamConverter annotation,
+        final Class targetType) {
+        Converter result = null;
+        final Object[] args;
+        final List<Object> parameter = new ArrayList<Object>();
+        if (targetType != null) {
+            parameter.add(targetType);
+        }
+        final List<Object> arrays = new ArrayList<Object>();
+        arrays.add(annotation.booleans());
+        arrays.add(annotation.bytes());
+        arrays.add(annotation.chars());
+        arrays.add(annotation.doubles());
+        arrays.add(annotation.floats());
+        arrays.add(annotation.ints());
+        arrays.add(annotation.longs());
+        arrays.add(annotation.shorts());
+        arrays.add(annotation.strings());
+        arrays.add(annotation.types());
+        for(Object array : arrays) {
+            if (array != null) {
+                int length = Array.getLength(array);
+                for (int i = 0; i < length; i++ ) {
+                    Object object = Array.get(array, i);
+                    if (!parameter.contains(object)) {
+                        parameter.add(object);
+                    }
+                }
+            }
+        }
+        final Class<? extends ConverterMatcher> converterType = annotation.value();
+        Map<List<Object>, Converter> converterMapping = converterCache.get(converterType);
+        if (converterMapping != null) {
+            result = converterMapping.get(parameter);
+        }
+        if (result == null) {
+            int size = parameter.size();
+            if (size > 0) {
+                args = new Object[arguments.length + size];
+                System.arraycopy(arguments, 0, args, size, arguments.length);
+                System.arraycopy(parameter.toArray(new Object[size]), 0, args, 0, size);
+            } else {
+                args = arguments;
+            }
+
+            final Converter converter;
+            try {
+                if (SingleValueConverter.class.isAssignableFrom(converterType)
+                    && !Converter.class.isAssignableFrom(converterType)) {
+                    final SingleValueConverter svc = (SingleValueConverter)DependencyInjectionFactory
+                        .newInstance(converterType, args);
+                    converter = new SingleValueConverterWrapper(svc);
+                } else {
+                    converter = (Converter)DependencyInjectionFactory.newInstance(
+                        converterType, args);
+                }
+            } catch (final Exception e) {
+                throw new InitializationException("Cannot instantiate converter "
+                    + converterType.getName()
+                    + (targetType != null ? " for type " + targetType.getName() : ""), e);
+            }
+            if (converterMapping == null) {
+                converterMapping = new HashMap<List<Object>, Converter>();
+                converterCache.put(converterType, converterMapping);
+            }
+            converterMapping.put(parameter, converter);
+            result = converter;
+        }
+        return result;
+    }
+方法产生。
+
+DependencyInjectionFactory.newInstance方法生成converter对象。
+
+
+
