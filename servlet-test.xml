@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <!-- 自动扫描且只扫描@Controller -->
+    <context:component-scan base-package="com.sfpay.axg" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <mvc:annotation-driven validator="validator" conversion-service="conversionService"/>
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+    	<property name="maxUploadSize" value="104857600"/>
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+
+    <!-- 定义JSP文件的位置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+    </bean>
+
+    <bean id="sfPayTokenManager" class="com.sfpay.axg.common.web.token.SfPayTokenManagerImpl"/>
+
+    <bean class="com.sfpay.axg.common.web.exception.DefaultSFPayHandlerExceptionResolver">
+        <property name="defaultErrorView" value="error/500.jsp"/>
+        <property name="jsonResultHelper">
+            <ref local="jsonResultHelper"/>
+        </property>
+        <property name="messageSource">
+            <ref local="messageSource"/>
+        </property>
+        <property name="sfPayTokenManager">
+            <ref bean="sfPayTokenManager" />
+        </property>
+    </bean>
+
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter"/>
+            </list>
+        </property>
+        <property name="webBindingInitializer">
+            <ref local="webBindingInitializer" />
+        </property>
+    </bean>
+
+    <bean id="messageConverters" class="com.sfpay.axg.common.web.http.converter.json.SfPayMappingJacksonHttpMessageConverter">
+        <property name="sfPayTokenManager">
+            <ref bean="sfPayTokenManager" />
+        </property>
+    </bean>
+
+    <bean id="webBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+        <property name="conversionService">
+            <ref local="conversionService" />
+        </property>
+        <!-- validator 继承自LocalValidatorFactoryBean-->
+        <property name="validator">
+            <ref local="validator" />
+        </property>
+    </bean>
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" >
+    	<property name="converters">
+    		<set>
+    			<bean class="com.sfpay.axg.web.springmvc.StringToDateConverter"></bean>
+    		</set>
+    	</property>
+    </bean>
+    <bean id="validator" class="com.sfpay.axg.common.web.beanvalidation.ExceptionOnErrorsValidatorFactoryBean">
+        <property name="messageSource">
+            <ref bean="messageSource" />
+        </property>
+    </bean>
+
+<!--    将内容或对象作为 HTTP 响应正文返回，使用@ResponseBody将会跳过视图处理部分，
+    而是调用适合HttpMessageConverter，将返回值写入输出流。-->
+    <bean id="jsonConverter"
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json"/>
+    </bean>
+
+    <bean id="jsonResultHelper" class="com.sfpay.axg.common.web.json.JsonResultHelper">
+        <property name="messageHelper">
+            <ref bean="messageHelper" />
+        </property>
+        <property name="sfPayTokenManager">
+            <ref bean="sfPayTokenManager" />
+        </property>
+    </bean>
+
+    <bean id="messageHelper" class="com.sfpay.axg.common.util.MessageHelper" />
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:messages/error</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <!-- 将无法mapping到Controller的path交给default servlet handler处理 -->
+    <mvc:default-servlet-handler/>
+    <!-- end -->
+    <!-- 以annotation方式配置Aop -->
+    <aop:aspectj-autoproxy />
+    <bean id="responseBodyAspect" class="com.sfpay.axg.common.web.aop.ResponseBodyAspect" />
+    <bean id="sfPayTokenCheckAdvice" class="com.sfpay.axg.common.web.token.SfPayTokenCheckAdvice">
+        <property name="sfPayTokenManager">
+            <ref bean="sfPayTokenManager" />
+        </property>
+        <property name="enableToken" value="${enableToken}"/>
+    </bean>
+
+    <bean class="com.sfpay.axg.common.web.exception.DuplicateFormTokenExceptionResolver">
+        <property name="order" value="10" />
+        <property name="defaultErrorView" value="error/500.jsp"/>
+        <property name="jsonResultHelper">
+            <ref local="jsonResultHelper"/>
+        </property>
+    </bean>
+
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <prop key="kaptcha.border">no</prop>
+                        <prop key="kaptcha.border.color">105,179,90</prop>
+                        <prop key="kaptcha.textproducer.font.color">red</prop>
+                        <prop key="kaptcha.image.width">250</prop>
+                        <prop key="kaptcha.textproducer.font.size">100</prop>
+                        <prop key="kaptcha.image.height">120</prop>
+                        <prop key="kaptcha.session.key">code</prop>
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
+                        <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.FishEyeGimpy</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 属性文件读入 -->
+    <beans profile="development">
+        <bean id="propertyConfigurer"
+              class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>classpath:properties/*.properties</value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="production">
+        <bean id="propertyConfigurer"
+              class="com.sfpay.framework.config.properties.PropertyPlaceholderConfigurer">
+            <property name="locations">
+                <list>
+                    <value>classpath:profiles/axg-web/properties/*.properties
+                    </value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+</beans>
