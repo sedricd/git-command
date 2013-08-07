@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/alliance" />
+		<property name="username" value="root" />
+		<property name="password" value="19860619" />
+		<property name="defaultAutoCommit" value="false" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 指定sqlMapConfig总配置文件，订制的environment在spring容器中不在生效 <property name="configLocation" 
+			value="classpath:sqlMapConfig.xml"/> -->
+		<!--指定实体类映射文件，可以指定同时指定某一包以及子包下面的所有配置文件，mapperLocations和configLocation 有一个即可，当需要为实体类指定别名时，可指定configLocation属性，再在mybatis总配置文件中采用mapper引入实体类映射文件 -->
+		<property name="mapperLocations" value="classpath*:/context/mybatis/mapper/*.xml" />
+	</bean>
+
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="basePackage" value="com.alliance.mybatis.dao" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 声明式事务 :即方法使用@transation注解 -->
+	<!-- <bean id="annotationTransactionAspect" class="org.springframework.transaction.aspectj.AnnotationTransactionAspect"> 
+		<property name="transactionManager" ref="transactionManager"></property> 
+		</bean> -->
+
+	<!-- 支持注解@Service @Compent @Controller @Repository -->
+	<context:annotation-config />
+	<!-- 支持@Configurable 注解 -->
+	<!-- <context:spring-configured /> -->
+
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<context:component-scan base-package="com.alliance.admin.servic.impl" />
+	<context:component-scan base-package="com.alliance.admin.action" />
+</beans>
