@@ -10,3 +10,27 @@
 /skill [sun<100] 烈日斩
 /skill [sun<100] 赤日轮
 /skill [distance>7] 银月斩
+
+
+
+
+
+
+
+
+/skill [cd:驱夜断愁,bufftime:暗尘>1] 贪魔体
+/cbuff [life>0.7] 贪魔体
+/skill [life<0.4] 贪魔体
+/skill 驱夜断愁
+/skill [sun>40,buff:日月同辉] 暗尘弥散
+/skill [moon>40,buff:日月同辉] 暗尘弥散
+/skill [nocd:贪魔体,buff:日月同辉] 暗沉弥散
+/skill [fullsun,buff:诛戮,nobuff:日月同辉] 光明相
+/skill [fullmoon,buff:诛戮,nobuff:日月同辉] 光明相
+/skill [nobuff:暗尘,buff:日月同辉,tnobuff:烈日] 烈日斩
+/skill 净世破魔击
+/skill [sunhit=1,sun<20,moon<30] 烈日斩
+/skill [sunhit=1,sun>70,sun<100] 烈日斩
+/skill [sunhit=1,moonhit=1,sun=0,sun<=moon,cd:烈日斩] 银月斩
+/skill [sun<moon,sun<100,moon<100] 幽月轮
+/skill [sun<100,moon<100] 赤日轮
